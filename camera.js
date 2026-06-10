@@ -4,29 +4,27 @@ const {sqrt} = Math
 class CAMERA {
     constructor(x,y,z){
         this.position = {x, y, z}
-        this.direction = {x:0.25 , y:-0.25 , z: 1}  
-        // this.direction = {x:0, y:-1, z:1}
-        // this.direction = {x: 0, y:-1, z:1}
+        this.direction = {x:0, y:0, z:1}
         
         this.coeff = {
             a: this.direction.x,
             b: this.direction.y,
-            c: this.direction.z,
+            c: -this.direction.z,
         }
 
-        this.coeff.d = -(this.coeff.a * x + this.coeff.b * y + this.coeff.c * z)
+        this.coeff.d = -(this.coeff.a * (x+this.direction.x) + this.coeff.b * (y+this.direction.y) + this.coeff.c * (z+this.direction.z))
         
 
     }
 
     updatePlane() {
+        const {x,y,z} = this.position
         this.coeff = {
             a: this.direction.x,
             b: this.direction.y,
             c: this.direction.z,
         }
-
-        this.coeff.d = -(this.coeff.a * this.position.x + this.coeff.b * this.position.y + this.coeff.c * this.position.z)
+        this.coeff.d = -(this.coeff.a * (x+this.direction.x) + this.coeff.b * (y+this.direction.y) + this.coeff.c * (z+this.direction.z))
     }
 
     updatePosition({x,y,z}) {
