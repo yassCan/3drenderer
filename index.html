@@ -10,11 +10,40 @@
 
 </head>
 <body>
+    <style>
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        body {
+            display: flex;
+            flex-direction: row;
+            gap: 2px;
+        }
+    </style>
     <script>
+        function subVector(a, b) {
+            return {
+                x: a.x - b.x,
+                y: a.y - b.y,
+                z: a.z - b.z
+            };
+        }
+
+        function normalize(v) {
+            const mag = Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+
+            return {
+                x: v.x / mag,
+                y: v.y / mag,
+                z: v.z / mag
+            };
+        }
         function line(ctx, x1, y1, x2, y2, color) {
             ctx.beginPath()
             ctx.strokeStyle = color 
-            ctx.lineWidth  = 0.6
+            ctx.lineWidth  = 1.5
             ctx.moveTo(x1+250, y1+250)
             ctx.lineTo(x2+250, y2+250)
             ctx.stroke()
@@ -28,7 +57,166 @@
         }
     </script>
     <canvas id="c" width="500" height="500"></canvas>
-    <button onclick="inter()">interact</button>
-    <button onclick="dynamicAlpha()">dynamic alpha</button>
+    <textarea id="verteces" style="height: 500px;">
+v 0.0 2.2 0.0
+v -0.04 2.0 0.015
+v 0.0 2.0 0.03
+v 0.04 2.0 0.015
+v 0.0 2.0 -0.015
+v -0.04 1.4 0.015
+v 0.0 1.4 0.03
+v 0.04 1.4 0.015
+v 0.0 1.4 -0.015
+v -0.05 0.7 0.02
+v 0.0 0.7 0.04
+v 0.05 0.7 0.02
+v 0.0 0.7 -0.02
+v -0.16 0.72 0.03
+v -0.18 0.62 0.03
+v -0.05 0.64 0.03
+v 0.16 0.72 0.03
+v 0.18 0.62 0.03
+v 0.05 0.64 0.03
+v -0.16 0.72 -0.03
+v -0.18 0.62 -0.03
+v -0.05 0.64 -0.03
+v 0.16 0.72 -0.03
+v 0.18 0.62 -0.03
+v 0.05 0.64 -0.02
+v -0.025 0.6 0.025
+v 0.025 0.6 0.025
+v 0.025 0.6 -0.025
+v -0.025 0.6 -0.025
+v -0.022 0.5 0.022
+v 0.022 0.5 0.022
+v 0.022 0.5 -0.022
+v -0.022 0.5 -0.022
+v -0.025 0.4 0.025
+v 0.025 0.4 0.025
+v 0.025 0.4 -0.025
+v -0.025 0.4 -0.025
+v -0.022 0.3 0.022
+v 0.022 0.3 0.022
+v 0.022 0.3 -0.022
+v -0.022 0.3 -0.022
+v -0.025 0.2 0.025
+v 0.025 0.2 0.025
+v 0.025 0.2 -0.025
+v -0.025 0.2 -0.025
+v -0.04 0.15 0.04
+v 0.04 0.15 0.04
+v 0.04 0.15 -0.04
+v -0.04 0.15 -0.04
+v 0.0 0.08 0.0
+f 1 2 3
+f 1 3 4
+f 1 4 5
+f 1 5 2
+f 2 6 7
+f 3 2 7
+f 3 7 8
+f 4 3 8
+f 4 8 9
+f 5 4 9
+f 5 9 6
+f 2 5 6
+f 6 10 11
+f 7 6 11
+f 7 11 12
+f 8 7 12
+f 8 12 13
+f 9 8 13
+f 9 13 10
+f 6 9 10
+f 14 15 16
+f 14 16 10
+f 15 11 16
+f 10 11 15
+f 17 19 18
+f 17 12 19
+f 18 19 11
+f 12 11 18
+f 20 22 21
+f 20 10 22
+f 21 22 13
+f 10 13 21
+f 23 24 25
+f 23 25 12
+f 24 13 25
+f 12 25 13
+f 14 20 21
+f 14 21 15
+f 17 23 24
+f 17 24 18
+f 15 21 27
+f 16 15 27
+f 16 27 26
+f 10 16 26
+f 18 24 28
+f 19 18 28
+f 19 28 27
+f 11 19 27
+f 21 22 29
+f 15 21 29
+f 15 29 26
+f 13 15 26
+f 24 23 28
+f 18 24 28
+f 18 28 27
+f 12 18 27
+f 26 27 31
+f 26 31 30
+f 27 28 32
+f 27 32 31
+f 28 29 33
+f 28 33 32
+f 29 26 30
+f 29 30 33
+f 30 31 35
+f 30 35 34
+f 31 32 36
+f 31 36 35
+f 32 33 37
+f 32 37 36
+f 33 30 34
+f 33 34 37
+f 34 35 39
+f 34 35 38
+f 35 36 40
+f 35 40 39
+f 36 37 41
+f 36 41 40
+f 37 34 38
+f 37 38 41
+f 38 39 43
+f 38 43 42
+f 39 40 44
+f 39 44 43
+f 40 41 45
+f 40 45 44
+f 41 38 42
+f 41 42 45
+f 42 43 47
+f 42 47 46
+f 43 44 48
+f 43 48 47
+f 44 45 49
+f 44 49 48
+f 45 42 46
+f 45 46 49
+f 46 47 50
+f 47 48 50
+f 48 49 50
+f 49 46 50
+    </textarea>
+    <div class="wrapper">
+        <button onclick="updateShape()">update shape</button>
+        <button onclick="inter()">interact</button>
+        <button onclick="XDirection()">X rotation</button>
+        <button onclick="YDirection()">Y Rotation</button>
+        <button onclick="alpha()">varying alpha</button>
+        <input type="range" id="x" min="-250" max="250"/>
+        <input type="range" id="y" min="-250" max="250"/>
+    </div>
 </body>
 </html>
